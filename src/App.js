@@ -13,12 +13,12 @@ import Settings from "./components/Settings/Settings";
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter> {/* creates "routes" context, on every update check request route with it "routes" variable */}
         <div className='app-wrapper'>
             <Header/>
             <Navbar/>
             <div className='app-wrapper-content'>
-                <Routes>
+                <Routes> {/* adds every child component to global "routes" state */}
                     <Route path='/dialogs' element={<Dialogs />}  />
                     <Route path='/profile' render={() => <Profile/>}  />
                     {/*<Route path='/profile' element={<Profile/>}  />*/}
@@ -29,7 +29,8 @@ const App = () => {
                 </Routes>
             </div>
         </div>
-    </BrowserRouter>);
+    </BrowserRouter>
+  );
 }
 
 export default App;

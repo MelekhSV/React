@@ -1,14 +1,8 @@
 import React from "react";
 import classes from './MyPosts.module.css'
 import Posts from "./Post/Posts";
-// import posts from './../Profile'
 
-let posts = [
-    {id:1, message:'Hello worls', like:15},
-    {id:2, message: "Hi", like: 20}
-]
-
-const MyPosts = () => {
+export const MyPosts = ({posts}) => {
     let postsElements = posts.map((p) => <Posts message={p.message} like={p.like} /> )
 
     return (
@@ -27,4 +21,6 @@ const MyPosts = () => {
     );
 }
 
-export default MyPosts
+// const SomeComponent = (props) => { const posts = props.posts; console.log(posts) }
+// const SomeComponent = (props) => { const {posts} = props; console.log(posts) }
+// const SomeComponent = ({posts}) => { console.log(posts) }
