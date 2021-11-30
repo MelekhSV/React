@@ -1,24 +1,35 @@
 import React from "react";
 import classes from './MyPosts.module.css'
 import Posts from "./Post/Posts";
-// import posts from './../Profile'
+import {updateNewPostText} from "../../../redux/state";
 
-let posts = [
-    {id:1, message:'Hello worls', like:15},
-    {id:2, message: "Hi", like: 20}
-]
 
-const MyPosts = () => {
-    let postsElements = posts.map((p) => <Posts message={p.message} like={p.like} /> )
 
+
+
+const MyPosts = (props) => {
+    let postsElements = props.posts.map((p) => <Posts message={p.message} like={p.like} /> );
+
+    let addPost =  () => {
+        props.addPost()
+    };
+
+    let newPostElement = React.createRef();
+
+    let onPostChange = () => {
+        let newText = newPostElement.current.value;
+        console.log()
+        props.updateNewPostText(newText)
+
+    }
     return (
             <div className={classes.postBlock}>
                 <h3>My post</h3>
                 <div>
                     <div>
-                        <textarea></textarea>
+                        <textarea onChange={onPostChange} ref={newPostElement} value={props.newPostText}/>
                     </div>
-                    <button> Add post</button>
+                    <button onClick={addPost}> Add post</button>
                 </div>
                 <div className={classes.posts}>
                     {postsElements}

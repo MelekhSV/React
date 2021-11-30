@@ -4,20 +4,18 @@ import MyPosts from "./MyPosts/MyPosts";
 import ProfileInfo from "./MyPosts/Profile/ProfileInfo";
 
 
-// let posts = [
-//     {id:1, message:'Hello worls', like:15},
-//     {id:2, message: "Hi", like: 20}
-// ]
 
-const Profile = () => {
+
+const Profile = (props) => {
     return (
         <div className={classes.content}>
             <div>
                 <ProfileInfo/>
-                <MyPosts/>
+                <MyPosts addPost={props.addPost} updateNewPostText={props.updateNewPostText} posts={props.profilePage.posts} newPostText={props.profilePage.newPostText}/>
             </div>
         </div>
 
     );
 }
 export default Profile
+
