@@ -14,12 +14,11 @@ const Message = (props) => {
     return (
         <div className={classes.dialog}>
             {props.message}
-            <textarea ref={newmessageElenent}></textarea>
-            <button onClick={addText}>add</button>
         </div>
 
     );
 }
+
 
 
 export default Message

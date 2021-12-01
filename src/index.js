@@ -11,12 +11,12 @@ import {addPost, updateNewPostText} from "./redux/state";
 let rerenderEntireTree = (state) =>{
     ReactDOM.render(
         <React.StrictMode>
-            <App addPost={store.addPost.bind(store)} state={state} updateNewPostText={store.updateNewPostText.bind(store)} />
+            <App dispatch={store.dispatch.bind(store)} store={store} state={state} />
         </React.StrictMode>,
         document.getElementById('root')
     );
 };
-rerenderEntireTree(store.getstate());
+rerenderEntireTree(store.getState());
 
 store.subscribe(rerenderEntireTree);
 
