@@ -1,4 +1,9 @@
-export const sideReducer = (state, action) => {
+
+
+let initialState = {}
+
+
+export const sideReducer = (state = initialState, action) => {
 
     return state;
 }

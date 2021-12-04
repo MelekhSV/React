@@ -1,7 +1,21 @@
 const UPDATE_NEW_MESSAGE = 'UPDATE-NEW-MESSAGE'
 const SEND_MESSAGE = 'SEND-MESSAGE'
 
-export const dialogReducer = (state, action) => {
+let initialState = {
+
+    dialogs: [
+        {id: 1, name: 'dima'},
+        {id: 2, name: 'Sveta'}
+    ],
+        messages: [
+        {id: 1, message: 'Hello'},
+        {id: 2, message: 'How are you'}
+    ],
+        newMessageText:' '
+}
+
+
+export const dialogReducer = (state = initialState, action) => {
 
     if (action.type === UPDATE_NEW_MESSAGE) {
         state.newMessageText = action.body;
