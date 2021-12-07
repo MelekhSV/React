@@ -10,8 +10,6 @@ const ProfileInfo = (props) => {
             )
 
 
-
-
     }
     return (
         <div className={classes.content}>
