@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import React from "react";
 import './App.css';
-import Header from './components/Header/Header.jsx'
+
 import Navbar from './components/Navbar/Navbar'
 
 
@@ -14,21 +14,22 @@ import {DialogsContainer} from "./components/Dialogs/DialogsContainer";
 
 import {UsersContainer} from "./components/Users/Usercontainer";
 import {ProfileContainer} from "./components/Profile/ProfileContainer";
-
+import {newHeaderContainer} from "./components/Header/HeaderContainer";
+import {Login} from "./components/Login/Login";
 
 
 const App = (props) => {
   return (
     <BrowserRouter>
         <div className='app-wrapper'>
-            <Header/>
+            <newHeaderContainer/>
             <Navbar/>
             <div className='app-wrapper-content'>
                 <Routes>
                     <Route path='/dialogs' element={<DialogsContainer  />}  />
                     {/*<Route path='/profile' element={<MyPostsContainer />}  />*/}
                     <Route path='/profile/:userId?' element={<ProfileContainer />}  />
-
+                    <Route path='/login' element={<Login />}  />
                     <Route path='/users' element={<UsersContainer />}  />
                     <Route path='/news' element={< News />}  />
                     <Route path='/musics' element={<Musics />}  />

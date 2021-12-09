@@ -1,25 +1,30 @@
 import React from "react";
 import classes from './Profile.module.css'
 import Profile from "./Profile";
-import * as axios from "axios";
 import {connect} from "react-redux";
-import {setUserProfileAC} from "../../redux/profile-reducer";
-import {withRouter} from 'react-router-dom'
+import {profileThunkCreator} from "../../redux/profile-reducer";
+import {authRedirectHoc} from "../../Hoc/authRedirect";
+import {compose} from "redux";
+import Dialogs from "../Dialogs/Dialogs";
+
+// import {withRouter} from "react-router-dom";
+
+
+// import {withRouter} from "react-router";
+// let withUrlDataContainerComponent = withRouter(ProfileContainer);
+
 
 
 export class ProfileContainer extends React.Component {
 
     componentDidMount() {
         let userId = this.props.match.params.userId;
-        if (!userId) [
-            userId = 2
-        ]
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId).then(response => {
-            this.props.setUserProfile(response.data)
-        })
+        if (!userId) {userId = 2}
+        this.props.profileThunkCreator(userId)
     }
 
     render() {
+
         return (
             <div className={classes.content}>
                 <div>
@@ -31,22 +36,38 @@ export class ProfileContainer extends React.Component {
     }
 }
 
+
+
 let mapStateToProps = (state) => {
     return {
         profile: state.profilePage.profile
     }
 }
-let mapDispatchToProps = (dispatch) => {
-    return {
-        setUserProfile: (profile) => {
-            dispatch(setUserProfileAC(profile))
-        }
-    }
-}
 
-let withUrlDataContainerComponent = withRouter(ProfileContainer);
+// let withUrlDataContainerComponent = withRouter(ProfileContainer);
 
-export const ProfileContainerNew = connect(mapStateToProps, mapDispatchToProps
-)(withUrlDataContainerComponent)
 
+// let mapDispatchToProps = (dispatch) => {
+//     return {
+//         setUserProfileAC: (profile) => {
+//             dispatch(setUserProfileAC(profile))
+//         }
+//     }
+// }
+
+// let withUrlDataContainerComponent = withRouter(ProfileContainer);
+
+// export const ProfileContainerNew = connect(mapStateToProps, mapDispatchToProps
+// )(withUrlDataContainerComponent)
+
+export const ProfileContainerNew = compose(
+    connect(mapStateToProps, {profileThunkCreator}),
+    authRedirectHoc
+)(ProfileContainer)
+
+
+// export const ProfileContainerNew = connect(mapStateToProps, {profileThunkCreator}
+// )(AuthRedirectComponent)
+//
+// let AuthRedirectComponent = authRedirectHoc(ProfileContainer)
 

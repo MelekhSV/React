@@ -1,10 +1,9 @@
 import React from "react";
-
-
 import {sendMessageCreator, updateNewMessageBodyCreator} from "../../redux/dialogs-reducer";
 import Dialogs from "./Dialogs";
-import {StoreContext} from "../../Context/StoreContext";
 import {connect} from "react-redux";
+import {authRedirectHoc} from "../../Hoc/authRedirect";
+import {compose} from "redux";
 
 
 // export const DialogsConteiner = (props) => {
@@ -47,7 +46,7 @@ import {connect} from "react-redux";
 
 let mapStateToProps = (state) => {
     return {
-        messagesPage: state.messagesPage
+        messagesPage: state.messagesPage,
     }
 }
 
@@ -62,4 +61,22 @@ let mapDispatchToProps = (dispatch) => {
     }
 }
 
-export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
+export const DialogsContainer = compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    authRedirectHoc
+)(Dialogs)
+
+//
+// let AuthRedirectComponent = authRedirectHoc(Dialogs)
+//
+// export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent);
+
+
+
+
+// let AuthRedirectComponent = (props) => {
+//     if (this.props.isAuths === false) {
+//         return <Redirect to={'/login'} />
+//     };
+//     return <Dialogs {...props}/>
+// }

@@ -1,22 +1,31 @@
 import React from "react";
 import {connect} from "react-redux";
-import {follow, setCurrentPage, setUsers, unFollow, setUsersTotalCount} from "../../redux/users-reducer";
-import * as axios from "axios";
+import {
+    follow,
+    setCurrentPage,
+    setUsers,
+    unFollow,
+    setUsersTotalCount,
+    followingIsProgress, getUsersThunkCreator
+} from "../../redux/users-reducer";
+
 import {UsersFunc} from "./Users";
+import {userApi} from "../../api/Api";
+import {authRedirectHoc} from "../../Hoc/authRedirect";
+import {compose} from "redux";
+import {profileThunkCreator} from "../../redux/profile-reducer";
+import {ProfileContainer} from "../Profile/ProfileContainer";
 
 class UsersAPIContainer extends React.Component {
     // constructor(props) {
     //     super(props);
     // }
     componentDidMount() {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).then(response => {
-            this.props.setUsers(response.data.items);
-            this.props.setUsersTotalCount(response.data.totalCount)})
+        this.props.getUsersThunkCreator(this.props.currentPage, this.props.pageSize)
+
     }
     onPageChanged = (pageNumber) => {
-        this.props.setCurrentPage(pageNumber)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`).then(response => {
-            this.props.setUsers(response.data.items)})
+        this.props.getUsersThunkCreator(pageNumber, this.props.pageSize)
     }
     render() {
         return  <UsersFunc totalUsersCount={this.props.totalUsersCount}
@@ -25,7 +34,8 @@ class UsersAPIContainer extends React.Component {
                            onPageChanged={this.onPageChanged}
                            users={this.props.users}
                            follow={this.props.follow}
-                           unfollow={this.props.unfollow}/>
+                           unfollow={this.props.unfollow}
+                           followingInProgress={this.props.followingInProgress}/>
     }
 }
 
@@ -35,7 +45,8 @@ let mapStateToProps = (state) => {
         users: state.usersPage.users,
         pageSize: state.usersPage.pageSize,
         totalUsersCount: state.usersPage.totalUsersCount,
-        currentPage: state.usersPage.currentPage
+        currentPage: state.usersPage.currentPage,
+        followingInProgress: state.usersPage.followingIsProgress
 
 
     }
@@ -66,6 +77,7 @@ let mapStateToProps = (state) => {
 // }
 
 
+let UsersAPIContainerRedirect = authRedirectHoc(UsersAPIContainer)
 
 
 export const UsersContainer =  connect(mapStateToProps, {
@@ -73,4 +85,7 @@ export const UsersContainer =  connect(mapStateToProps, {
     unFollow,
     setUsers,
     setCurrentPage,
-    setUsersTotalCount})(UsersAPIContainer);
+    setUsersTotalCount,
+    followingIsProgress,
+    getUsersThunkCreator})(UsersAPIContainerRedirect);
+

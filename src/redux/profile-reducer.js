@@ -1,3 +1,6 @@
+import {profileApi, userApi} from "../api/Api";
+import {followingIsProgress, unFollow} from "./users-reducer";
+
 const ADD_POST = 'ADD-POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT'
 const SET_USER_PROFILE = 'SET-USER-PROFILE'
@@ -50,23 +53,7 @@ export const profileReducer = (state = initialState, action) => {
         default:
             return state
 
-
     }
-    //
-    // if (action.type === ADD_POST) {
-    //     let newPost = {
-    //         id: 5,
-    //         message: state.newPostText,
-    //         like: 0
-    //     };
-    //     state.posts.push(newPost);
-    //     state.newPostText = ' ';
-    // } else if (action.type === UPDATE_NEW_POST_TEXT) {
-    //     state.newPostText = action.newText;
-    //
-    // }
-
-
 }
 
 export const addPostActionCreator = () => {
@@ -76,3 +63,13 @@ export const addPostActionCreator = () => {
 }
 export const updateNewPostTextActionCreator = (newText) => ({type: UPDATE_NEW_POST_TEXT, newText: newText})
 export const setUserProfileAC = (profile) => ({type: SET_USER_PROFILE, profile})
+
+
+
+export const profileThunkCreator = (userId) => {
+    return (dispatch) => {
+        userApi.getProfile(userId).then(response => {
+            dispatch(setUserProfileAC(response.data))
+        })
+    }
+}
