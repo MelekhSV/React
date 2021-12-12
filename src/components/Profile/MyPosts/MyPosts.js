@@ -20,20 +20,25 @@ const AddNewPostForm = (props) => {
 let AddNewPostFormRedux = reduxForm({form:'ProfileAddNewPostForm'})(AddNewPostForm)
 
 
-const MyPosts = (props) => {
-    let postsElements = props.posts.map((p) => <Posts message={p.message} like={p.like} /> );
-
-    let onAddPost =  (value) => {
-        props.addPost(value.newPostText);
-    };
-    let newPostElement = React.createRef();
-    //
-    // let onPostChange = () => {
-    //     let newText = newPostElement.current.value;
-    //     props.updateNewPostText(newText)
-    //
+export const MyPosts = React.memo(props => {
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     return nextProps != this.props || nextState!= this.state;
     // }
-    return (
+    //
+    // render() {
+        let postsElements = props.posts.map((p) => <Posts message={p.message} like={p.like} /> );
+
+        let onAddPost =  (value) => {
+            props.addPost(value.newPostText);
+        };
+        let newPostElement = React.createRef();
+        //
+        // let onPostChange = () => {
+        //     let newText = newPostElement.current.value;
+        //     props.updateNewPostText(newText)
+        //
+        // }
+        return (
             <div className={classes.postBlock}>
                 <h3>My post</h3>
                 <AddNewPostFormRedux onSubmin={onAddPost}/>
@@ -41,7 +46,8 @@ const MyPosts = (props) => {
                     {postsElements}
                 </div>
             </div>
-    );
-}
+        );
+    // }
+})
 
-export default MyPosts
+

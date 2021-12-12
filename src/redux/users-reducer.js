@@ -16,8 +16,6 @@ let initialState = {
     followingInProgress: []
 
 };
-
-
 export const userReducer = (state = initialState, action) => {
 
     switch (action.type) {
@@ -81,10 +79,10 @@ export const setCurrentPage = (currentPage) => ({type: SET_CURRENT_PAGE, current
 export const setUsersTotalCount = (totalUsersCount) => ({type: SET_TOTAL_USERS_COUNT, count:totalUsersCount })
 export const followingIsProgress = (isFetching, userId) => ({type: FOLLOWING_IS_PROGRESS, isFetching, userId })
 
-export const getUsersThunkCreator = (currentPage, pageSize) => {
+export const getUsersThunkCreator = (page, pageSize) => {
     return (dispatch) => {
-
-        userApi.getUsers(currentPage, pageSize).then(response => {
+        dispatch(setCurrentPage(page))
+        userApi.getUsers(page, pageSize).then(response => {
             dispatch(setUsers(data.items));
             dispatch(setUsersTotalCount(data.totalCount))})
     }

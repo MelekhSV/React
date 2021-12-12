@@ -11,6 +11,13 @@ import {
 
 import {UsersFunc} from "./Users";
 import {authRedirectHoc} from "../../Hoc/authRedirect";
+import {
+    getCurrentPage,
+    getFollowingIsProgress, getIsFetching,
+    getPageSize,
+    gettotalUsersCount,
+    getUsers, getUsersSuperSelector
+} from "../../redux/users-selectors/user-selectors";
 
 
 class UsersAPIContainer extends React.Component {
@@ -37,19 +44,28 @@ class UsersAPIContainer extends React.Component {
 }
 
 
+// let mapStateToProps = (state) => {
+//     return {
+//         users: state.usersPage.users,
+//         pageSize: state.usersPage.pageSize,
+//         totalUsersCount: state.usersPage.totalUsersCount,
+//         currentPage: state.usersPage.currentPage,
+//         followingInProgress: state.usersPage.followingIsProgress
+//     }
+// }
+
+
 let mapStateToProps = (state) => {
     return {
-        users: state.usersPage.users,
-        pageSize: state.usersPage.pageSize,
-        totalUsersCount: state.usersPage.totalUsersCount,
-        currentPage: state.usersPage.currentPage,
-        followingInProgress: state.usersPage.followingIsProgress
-
-
+        // users: getUsers(state),
+        users: getUsersSuperSelector(state),
+        pageSize: getPageSize(state),
+        totalUsersCount: gettotalUsersCount(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingIsProgress(state)
     }
 }
-
-
 
 
 let UsersAPIContainerRedirect = authRedirectHoc(UsersAPIContainer)
