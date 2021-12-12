@@ -2,10 +2,11 @@ import React from "react";
 import classes from './Profile.module.css'
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {profileThunkCreator} from "../../redux/profile-reducer";
+import {getStatus, profileThunkCreator, updateStatus} from "../../redux/profile-reducer";
 import {authRedirectHoc} from "../../Hoc/authRedirect";
 import {compose} from "redux";
 import Dialogs from "../Dialogs/Dialogs";
+import {getFirstHiddenTime} from "web-vitals/dist/modules/lib/polyfills/getFirstHiddenTimePolyfill";
 
 // import {withRouter} from "react-router-dom";
 
@@ -16,22 +17,27 @@ import Dialogs from "../Dialogs/Dialogs";
 
 
 export class ProfileContainer extends React.Component {
-
     componentDidMount() {
         let userId = this.props.match.params.userId;
-        if (!userId) {userId = 2}
+        if (!userId) {
+            userId = this.props.authorizedUserId;
+            if (!userId){
+                this.props.history.push('/login')
+            }
+        }
         this.props.profileThunkCreator(userId)
+        this.props.getStatus(userId);
     }
-
     render() {
-
         return (
             <div className={classes.content}>
                 <div>
-                    <Profile {...this.props} profile={this.props.profile}/>
+                    <Profile {...this.props}
+                             profile={this.props.profile}
+                             status={this.props.status}
+                             updateStatus={this.props.updateStatus}/>
                 </div>
             </div>
-
         );
     }
 }
@@ -40,7 +46,10 @@ export class ProfileContainer extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
-        profile: state.profilePage.profile
+        profile: state.profilePage.profile,
+        status: state.profilePage.status,
+        authorizedUserId: state.auth.userId,
+        isAuths: state.auth.isAuths,
     }
 }
 
@@ -61,7 +70,7 @@ let mapStateToProps = (state) => {
 // )(withUrlDataContainerComponent)
 
 export const ProfileContainerNew = compose(
-    connect(mapStateToProps, {profileThunkCreator}),
+    connect(mapStateToProps, {profileThunkCreator, getStatus, updateStatus}),
     authRedirectHoc
 )(ProfileContainer)
 

@@ -10,11 +10,8 @@ import {
 } from "../../redux/users-reducer";
 
 import {UsersFunc} from "./Users";
-import {userApi} from "../../api/Api";
 import {authRedirectHoc} from "../../Hoc/authRedirect";
-import {compose} from "redux";
-import {profileThunkCreator} from "../../redux/profile-reducer";
-import {ProfileContainer} from "../Profile/ProfileContainer";
+
 
 class UsersAPIContainer extends React.Component {
     // constructor(props) {
@@ -52,6 +49,24 @@ let mapStateToProps = (state) => {
     }
 }
 
+
+
+
+let UsersAPIContainerRedirect = authRedirectHoc(UsersAPIContainer)
+
+
+export const UsersContainer =  connect(mapStateToProps, {
+    follow,
+    unFollow,
+    setUsers,
+    setCurrentPage,
+    setUsersTotalCount,
+    followingIsProgress,
+    getUsersThunkCreator})(UsersAPIContainerRedirect);
+
+
+
+
 // let mapDispatchToProps = (dispatch) => {
 //     return {
 //
@@ -75,17 +90,3 @@ let mapStateToProps = (state) => {
 //     }
 //
 // }
-
-
-let UsersAPIContainerRedirect = authRedirectHoc(UsersAPIContainer)
-
-
-export const UsersContainer =  connect(mapStateToProps, {
-    follow,
-    unFollow,
-    setUsers,
-    setCurrentPage,
-    setUsersTotalCount,
-    followingIsProgress,
-    getUsersThunkCreator})(UsersAPIContainerRedirect);
-

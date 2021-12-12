@@ -1,5 +1,5 @@
 const UPDATE_NEW_MESSAGE = 'UPDATE-NEW-MESSAGE'
-const SEND_MESSAGE = 'SEND-MESSAGE'
+// const SEND_MESSAGE = 'SEND-MESSAGE'
 
 let initialState = {
 
@@ -23,35 +23,36 @@ export const dialogReducer = (state = initialState, action) => {
         return (
             {
                 ...state,
-                newMessageText: action.body
+                newMessageText: action.newMessageBody
             }
         )
 
         // stateCopy.newMessageText = action.body;
-    } else if (action.type === SEND_MESSAGE) {
-        let body = state.newMessageText;
-        return (
-
-            {
-                ...state,
-                newMessageText: '',
-                messages: [...state.messages, {id: 6, message: body}]
-            }
-        )
+    }
+    // else if (action.type === SEND_MESSAGE) {
+    //     let body = state.newMessageText;
+    //     return (
+    //
+    //         {
+    //             ...state,
+    //             newMessageText: '',
+    //             messages: [...state.messages, {id: 6, message: body}]
+    //         }
+    //     )
         // let body = state.newMessageText;
         // stateCopy.newMessageText = '';
         // stateCopy.messages.push({id: 6, message: body})
 
-    }
+    // }
     return state;
 }
 
-export const sendMessageCreator = () => {
+export const sendMessageCreator = (newMessageBody) => {
     return (
-        {type: SEND_MESSAGE}
+        {type: SEND_MESSAGE, newMessageBody}
     )
 }
-export const updateNewMessageBodyCreator = (body) => ({
-    type: UPDATE_NEW_MESSAGE
-    , body: body
-})
+// export const updateNewMessageBodyCreator = (body) => ({
+//     type: UPDATE_NEW_MESSAGE
+//     , body: body
+// })
