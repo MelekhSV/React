@@ -6,6 +6,8 @@ const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT'
 const SET_USER_PROFILE = 'SET-USER-PROFILE'
 const SET_STATUS = 'SET-STATUS'
 const DELETE_POSTS = 'DELETE-POSTS'
+const SAVE_PHOTO = 'SAVE-PHOTO'
+const SAVE_PROFILE = 'SAVE-PROFILE'
 
 let initialState = {
     posts: [
@@ -14,7 +16,8 @@ let initialState = {
     ],
     newPostText: 'hello world',
     profile: null,
-    status: ''
+    status: '',
+    file:null
 };
 
 
@@ -60,8 +63,16 @@ export const profileReducer = (state = initialState, action) => {
                 ...state, posts: state.posts.filter(p => p.id != action.postId)
             }
         }
-
-
+        case SAVE_PHOTO:{
+            return  {
+                ...state, file: action.file
+            }
+        }
+        case SAVE_PROFILE:{
+            return  {
+                ...state, profile: action.profile
+            }
+        }
         default:
             return state
 
@@ -77,7 +88,33 @@ export const updateNewPostTextActionCreator = (newText) => ({type: UPDATE_NEW_PO
 export const setUserProfileAC = (profile) => ({type: SET_USER_PROFILE, profile})
 export const setStatusAC = (status) => ({type: SET_STATUS, status})
 export const deletePost = (postId) => ({type: DELETE_POSTS, postId})
+export const savePhotoAC = (file) => ({type: DELETE_POSTS, file})
+export const saveProfileAC = (profile) => ({type: SAVE-PROFILE, profile})
 
+
+export const saveProfile = (file) => {
+    const userId = getStatus().auth.userId
+
+    return (dispatch) => {
+        profileApi.saveProfile(userId).then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(saveProfileAC(profile))
+            } else {
+                let message = response.data.messages.length > 0 ? response.data.messages[0] : 'Some error';
+                dispatch(stopSubmit('edit-profile',{_error:response.data.messages[0]}});
+                return Promise.reject()
+            }
+        })
+    }
+}
+
+export const savePhoto = (file) => {
+    return (dispatch) => {
+        profileApi.SavePhoto(userId).then(response => {
+            dispatch(savePhotoAC(response.data))
+        })
+    }
+}
 
 export const getStatus = (userId) => {
     return (dispatch) => {

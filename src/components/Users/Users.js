@@ -2,9 +2,9 @@ import React from "react";
 import style from './Users.module.css'
 import userPhoto from './../../asserts/image/user_image.jpg'
 import {NavLink} from "react-router-dom";
-import * as axios from "axios";
-import {follow, followingIsProgress, followThunkCreator, unfollowThunkCreator,} from "../../redux/users-reducer";
-import {userApi} from "../../api/Api";
+import {followThunkCreator, unfollowThunkCreator,} from "../../redux/users-reducer";
+
+import {Paginator} from "../Paginator/Paginator";
 
 export const UsersFunc = (props) => {
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
@@ -15,11 +15,10 @@ export const UsersFunc = (props) => {
     return (
         <div>
             <div>
-                {pages.map(p => {
-                    return <span onClick={() => {
-                        props.onPageChanged(p)
-                    }} className={props.currentPage === p && style.selectedPage}>{p}</span>
-                })}
+                <Paginator currentPage={props.currentPage}
+                           totalUsersCount={props.totalUsersCount}
+                           pageSize={props.pageSize}
+                           onPageChanged={props.onPageChanged} />
             </div>
             <div>
                 {

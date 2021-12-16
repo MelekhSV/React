@@ -2,7 +2,7 @@ import React from "react";
 import classes from './Profile.module.css'
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {getStatus, profileThunkCreator, updateStatus} from "../../redux/profile-reducer";
+import {getStatus, profileThunkCreator, savePhoto, updateStatus} from "../../redux/profile-reducer";
 import {authRedirectHoc} from "../../Hoc/authRedirect";
 import {compose} from "redux";
 import Dialogs from "../Dialogs/Dialogs";
@@ -28,14 +28,31 @@ export class ProfileContainer extends React.Component {
         this.props.profileThunkCreator(userId)
         this.props.getStatus(userId);
     }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.params.userId != prevProps.match.params.userId) {
+            let userId = this.props.match.params.userId;
+            if (!userId) {
+                userId = this.props.authorizedUserId;
+                if (!userId){
+                    this.props.history.push('/login')
+                }
+            }
+            this.props.profileThunkCreator(userId)
+            this.props.getStatus(userId);
+        }
+
+    }
+
     render() {
         return (
             <div className={classes.content}>
                 <div>
                     <Profile {...this.props}
+                             isOwner={!this.props.match.params.userId}
                              profile={this.props.profile}
                              status={this.props.status}
-                             updateStatus={this.props.updateStatus}/>
+                             updateStatus={this.props.updateStatus}
+                            savePhoto={this.props.savePhoto}/>
                 </div>
             </div>
         );
@@ -71,7 +88,7 @@ let mapStateToProps = (state) => {
 
 export const ProfileContainerNew = compose(
     connect(mapStateToProps, {profileThunkCreator, getStatus, updateStatus}),
-    authRedirectHoc
+    authRedirectHoc, savePhotoAC, savePhoto
 )(ProfileContainer)
 
 

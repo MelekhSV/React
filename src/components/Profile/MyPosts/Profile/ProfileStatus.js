@@ -1,8 +1,8 @@
 import React from "react";
-import classes from './ProfileInfo.module.css'
 
 
-class ProfileStatus extends React.Component {
+
+export class ProfileStatus extends React.Component {
     // statusInputRef = React.createRef()
     state = {
         editMode: false,
@@ -18,9 +18,7 @@ class ProfileStatus extends React.Component {
             editMode:false
         })
         this.props.updateStatus(this.state.status);
-
     }
-
     onStatusChange = (e) => {
         this.setState({
             status: e.currentTarget.value
@@ -45,7 +43,6 @@ class ProfileStatus extends React.Component {
                 }
                 {this.state.editMode &&
                     <div>
-                        {/*ref={this.statusInputRef}*/}
                         <input onChange={this.onStatusChange} autoFocus={true} onBlur={this.deactivateEditMode} value={this.state.status}/>
                     </div>
                 }
